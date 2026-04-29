@@ -6,7 +6,6 @@ services:
     region: singapore
     dockerfilePath: ./services/persona-proxy/Dockerfile
     dockerContext: ./services/persona-proxy
-    healthCheckPath: /health
     autoDeployTrigger: commit
     envVars:
       - key: GROQ_API_KEY
