@@ -75,13 +75,32 @@ Every incoming conversation is first checked with Groq's `meta-llama/llama-promp
 
 ## Deployment
 
-### Recommended
+### Recommended: Render
 
-Deploy on a container host such as Railway, Render, Fly.io, or a VPS, because Open WebUI is a long-running container app.
+This repo includes a [render.yaml](/D:/HARSHIT/chatbot/render.yaml) Blueprint for a two-service Render deployment:
+
+- `scaler-persona-proxy`: private FastAPI service that talks to Groq
+- `scaler-persona-openwebui`: public Open WebUI service with a persistent disk
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/X-DIABLO-X/scaler-persona-chatbot-openwebui)
+
+#### Deploy on Render
+
+1. Open the repo in Render using Blueprint deploy.
+2. Let Render create both services from `render.yaml`.
+3. Provide `GROQ_API_KEY` when Render prompts for it.
+4. Keep the generated values for `PERSONA_PROXY_API_KEY` and `WEBUI_SECRET_KEY`.
+5. Wait for both services to finish building.
+6. Open the `scaler-persona-openwebui` public URL.
+7. Create the first admin account in Open WebUI.
+
+#### Important Render note
+
+Open WebUI needs persistent storage for its SQLite database and uploads. Render persistent disks are only available on paid instances, so the Open WebUI service uses the `starter` plan with a 1 GB disk mounted at `/app/backend/data`.
 
 ### Why not Vercel for the full stack?
 
-Vercel does not host Docker Compose or long-running Open WebUI containers directly. If you need something on Vercel, use Vercel for a landing page or documentation site and deploy the actual chatbot stack to a container host.
+Vercel does not support deploying Docker images or long-running Open WebUI containers directly, so Render is the correct deployment target for this architecture.
 
 ## Environment Variables
 
@@ -113,4 +132,3 @@ Add screenshots after local run or deployment:
 - Chat with Anshuman Singh
 - Chat with Abhimanyu Saxena
 - Chat with Kshitij Mishra
-

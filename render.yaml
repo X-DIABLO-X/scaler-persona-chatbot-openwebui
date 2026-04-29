@@ -1,0 +1,55 @@
+services:
+  - type: pserv
+    name: scaler-persona-proxy
+    runtime: docker
+    plan: starter
+    region: singapore
+    dockerfilePath: ./services/persona-proxy/Dockerfile
+    dockerContext: ./services/persona-proxy
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MAIN_MODEL
+        value: meta-llama/llama-4-scout-17b-16e-instruct
+      - key: GROQ_GUARD_MODEL
+        value: meta-llama/llama-prompt-guard-2-86m
+      - key: PERSONA_PROXY_API_KEY
+        generateValue: true
+
+  - type: web
+    name: scaler-persona-openwebui
+    runtime: docker
+    plan: starter
+    region: singapore
+    dockerfilePath: ./services/open-webui/Dockerfile
+    dockerContext: .
+    autoDeployTrigger: commit
+    disk:
+      name: openwebui-data
+      mountPath: /app/backend/data
+      sizeGB: 1
+    envVars:
+      - key: ENABLE_OLLAMA_API
+        value: "false"
+      - key: ENABLE_OPENAI_API
+        value: "true"
+      - key: OPENAI_API_KEY
+        fromService:
+          type: pserv
+          name: scaler-persona-proxy
+          envVarKey: PERSONA_PROXY_API_KEY
+      - key: PERSONA_PROXY_HOSTPORT
+        fromService:
+          type: pserv
+          name: scaler-persona-proxy
+          property: hostport
+      - key: WEBUI_SECRET_KEY
+        generateValue: true
+      - key: WEBUI_NAME
+        value: Scaler Persona Chatbot
+      - key: DEFAULT_MODELS
+        value: anshuman-singh
+      - key: DATA_DIR
+        value: /app/backend/data
