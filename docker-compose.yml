@@ -4,8 +4,8 @@ services:
       context: ./services/persona-proxy
     env_file:
       - .env
-    ports:
-      - "${PERSONA_PROXY_PORT:-8000}:8000"
+    expose:
+      - "8000"
     restart: unless-stopped
 
   open-webui:
