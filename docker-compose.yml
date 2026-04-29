@@ -17,6 +17,7 @@ services:
     environment:
       ENABLE_OLLAMA_API: "false"
       ENABLE_OPENAI_API: "true"
+      OFFLINE_MODE: "true"
       OPENAI_API_BASE_URL: "http://persona-proxy:8000/v1"
       OPENAI_API_KEY: "${PERSONA_PROXY_API_KEY}"
       WEBUI_SECRET_KEY: "${OPENWEBUI_SECRET_KEY}"
