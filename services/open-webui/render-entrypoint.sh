@@ -13,4 +13,8 @@ if [ -n "${PORT:-}" ]; then
   export WEBUI_PORT="${PORT}"
 fi
 
-exec "$@"
+if [ "$#" -gt 0 ]; then
+  exec "$@"
+fi
+
+exec bash start.sh
