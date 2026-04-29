@@ -1,0 +1,29 @@
+services:
+  persona-proxy:
+    build:
+      context: ./services/persona-proxy
+    env_file:
+      - .env
+    ports:
+      - "${PERSONA_PROXY_PORT:-8000}:8000"
+    restart: unless-stopped
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    depends_on:
+      - persona-proxy
+    env_file:
+      - .env
+    environment:
+      ENABLE_OLLAMA_API: "false"
+      ENABLE_OPENAI_API: "true"
+      OPENAI_API_BASE_URL: "http://persona-proxy:8000/v1"
+      OPENAI_API_KEY: "${PERSONA_PROXY_API_KEY}"
+      WEBUI_SECRET_KEY: "${OPENWEBUI_SECRET_KEY}"
+      WEBUI_NAME: "Scaler Persona Chatbot"
+      DEFAULT_MODELS: "anshuman-singh"
+    volumes:
+      - ./backend-data:/app/backend/data
+    ports:
+      - "${OPENWEBUI_PORT:-3000}:8080"
+    restart: unless-stopped
