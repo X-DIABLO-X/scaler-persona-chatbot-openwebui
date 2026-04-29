@@ -24,10 +24,5 @@ fi
 
 export HOST="${HOST:-0.0.0.0}"
 export PORT="${PORT:-8080}"
-export UVICORN_WORKERS="${UVICORN_WORKERS:-1}"
 
-exec python3 -m uvicorn open_webui.main:app \
-  --host "$HOST" \
-  --port "$PORT" \
-  --forwarded-allow-ips '*' \
-  --workers "$UVICORN_WORKERS"
+exec bash start.sh

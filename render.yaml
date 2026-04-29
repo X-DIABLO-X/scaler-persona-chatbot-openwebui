@@ -34,6 +34,10 @@ services:
         value: "false"
       - key: ENABLE_OPENAI_API
         value: "true"
+      - key: HOST
+        value: "0.0.0.0"
+      - key: PORT
+        value: "8080"
       - key: OFFLINE_MODE
         value: "true"
       - key: OPENAI_API_KEY
