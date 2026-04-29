@@ -4,8 +4,8 @@ services:
     runtime: docker
     plan: starter
     region: singapore
-    dockerfilePath: ./services/persona-proxy/Dockerfile
-    dockerContext: ./services/persona-proxy
+    dockerfilePath: Dockerfile.persona-proxy
+    dockerContext: .
     autoDeployTrigger: commit
     envVars:
       - key: GROQ_API_KEY
@@ -22,7 +22,7 @@ services:
     runtime: docker
     plan: starter
     region: singapore
-    dockerfilePath: ./services/open-webui/Dockerfile
+    dockerfilePath: Dockerfile.open-webui
     dockerContext: .
     autoDeployTrigger: commit
     disk:
